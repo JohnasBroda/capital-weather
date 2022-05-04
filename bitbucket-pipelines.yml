@@ -1,0 +1,101 @@
+# Változók:
+# $PROJECT_NAME - Registryről a projektek nevei.
+# $SSH_USER_NAME - A szerver ssh user neve.
+# $SERVER_IP - A szerver IP címe ahol futnak majd a konténerek.
+# $SERVER_NAME - A szerver neve.
+# $DOMAIN_NAME - Cloudflare domain néve. 
+# $CONTAINER_NAME - Konténer neve.
+# $REGISTRY_USERNAME - Registry felhasználó neve.
+# $REGISTRY_PASSWORD - Registry felhasználó jelszava.
+
+
+
+image: registry.wtf/adroit/builder:latest
+
+definitions:
+  services:
+    docker:
+      memory: 2048
+
+pipelines:
+  caches:
+    - docker
+
+  branches:
+    '{master}':
+      - step:
+          name: Build
+          #runs-on: self.hosted
+          services:
+            - docker
+          script:
+            - docker login registry.wtf --username $REGISTRY_USERNAME --password $REGISTRY_PASSWORD
+            - docker build -t registry.wtf/$PROJECT_NAME/frontend-prod --build-arg ENV=production .
+            - docker push registry.wtf/$PROJECT_NAME/frontend-prod
+      - step:
+         name: Deployment
+         deployment: production
+         script:
+           - echo "Deploying to production environment"
+           - pipe: atlassian/ssh-run:0.2.2
+             variables:
+               SSH_USER: '$SSH_USER_NAME'
+               SERVER: '$SERVER_IP'
+               COMMAND: >
+                  mkdir -p /srv/$DOMAIN_NAME/$DOMAIN_NAME-prod &&
+                  cd /srv/$DOMAIN_NAME/$DOMAIN_NAME-prod &&
+                  sudo docker-compose pull &&
+                  sudo docker-compose up -d
+      - step:
+         name: Cache clear
+         clone:
+            enabled: false
+         script:
+           - cf-cache-clear $DOMAIN_NAME
+      - step:
+         name: Notification
+         clone:
+            enabled: false
+         script:
+           - echo "Sending Slack notification"
+           - slack-simple --url $DOMAIN_NAME --channel shelter-ukr --code prod --server $SERVER_NAME --container $CONTAINER_NAME
+           
+    '{develop}':
+      - step:
+          name: Build
+          #runs-on: self.hosted
+          services:
+            - docker
+          script:
+            - docker login registry.wtf --username $REGISTRY_USERNAME --password $REGISTRY_PASSWORD
+            - docker build -t registry.wtf/$PROJECT_NAME/frontend-fat --build-arg ENV=fat .
+            - docker push registry.wtf/$PROJECT_NAME/frontend-fat
+      - step:
+         name: Deployment
+         deployment: test
+         clone:
+            enabled: false
+         script:
+           - echo "Deploying to FAT environment"
+           - pipe: atlassian/ssh-run:0.2.2
+             variables:
+               SSH_USER: '$SSH_USER_NAME'
+               SERVER: '$SERVER_IP'
+               COMMAND: >
+                  mkdir -p /srv/$DOMAIN_NAME/$DOMAIN_NAME-fat &&
+                  cd /srv/$DOMAIN_NAME/$DOMAIN_NAME-fat &&
+                  sudo docker-compose pull &&
+                  sudo docker-compose up -d
+      - step:
+         name: Cache clear
+         clone:
+            enabled: false
+         script:
+           - cf-cache-clear $DOMAIN_NAME
+      - step:
+         name: Notification
+         clone:
+            enabled: false
+         script:
+           - echo "Sending Slack notification"
+           - slack-simple --url $DOMAIN_NAME --channel shelter-ukr --code fat --server $SERVER_NAME --container $CONTAINER_NAME
