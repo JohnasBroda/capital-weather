@@ -4,7 +4,7 @@
 # $SERVER_IP - A szerver IP címe ahol futnak majd a konténerek.
 # $SERVER_NAME - A szerver neve.
 # $DOMAIN_NAME - Cloudflare domain néve.
-# $SLACK.CHANEL - Ahova küldi az értesítést.
+# $SLACK_CHANEL - Ahova küldi az értesítést.
 # $PROD_DOMAIN_NAME - Slack üzenetben megjelenített url.
 # $CONTAINER_NAME - Konténer neve.
 # $REGISTRY_USERNAME - Registry felhasználó neve.
@@ -60,7 +60,7 @@ pipelines:
             enabled: false
          script:
            - echo "Sending Slack notification"
-           - slack-simple --url $PROD_DOMAIN_NAME --channel $SLACK.CHANEL --code prod --server $SERVER_NAME --container $CONTAINER_NAME
+           - slack-simple --url $PROD_DOMAIN_NAME --channel $SLACK_CHANEL --code prod --server $SERVER_NAME --container $CONTAINER_NAME
            
     '{develop}':
       - step:
@@ -100,4 +100,4 @@ pipelines:
             enabled: false
          script:
            - echo "Sending Slack notification"
-           - slack-simple --url $PROD_DOMAIN_NAME --channel $SLACK.CHANEL --code fat --server $SERVER_NAME --container $CONTAINER_NAME
+           - slack-simple --url $PROD_DOMAIN_NAME --channel $SLACK_CHANEL --code fat --server $SERVER_NAME --container $CONTAINER_NAME
