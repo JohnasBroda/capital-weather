@@ -1,11 +1,14 @@
 # Változók:
 # $PROJECT_NAME - Registryről a projektek nevei.
 # $SSH_USER_NAME - A szerver ssh user neve.
-# $SERVER_IP - A szerver IP címe ahol futnak majd a konténerek.
-# $SERVER_NAME - A szerver neve.
+# $PROD_SERVER_IP - A prod szerver IP címe ahol futnak majd a konténerek.
+# $PROD_SERVER_NAME - A prod szerver neve.
+# $DEV_SERVER_IP - A dev szerver IP címe ahol futnak majd a konténerek.
+# $DEV_SERVER_NAME - A dev szerver neve.
 # $DOMAIN_NAME - Cloudflare domain néve.
 # $SLACK_CHANEL - Ahova küldi az értesítést.
-# $PROD_DOMAIN_NAME - Slack üzenetben megjelenített url.
+# $PROD_DOMAIN_NAME - Slack üzenetben megjelenített url(prod).
+# $DEV_DOMAIN_NAME - Slack üzenetben megjelenített url(dev).
 # $CONTAINER_NAME - Konténer neve.
 # $REGISTRY_USERNAME - Registry felhasználó neve.
 # $REGISTRY_PASSWORD - Registry felhasználó jelszava.
@@ -41,8 +44,8 @@ pipelines:
            - echo "Deploying to production environment"
            - pipe: atlassian/ssh-run:0.2.2
              variables:
-               SSH_USER: '$SSH_USER_NAME'
-               SERVER: '$SERVER_IP'
+               SSH_USER: '$PROD_SSH_USER_NAME'
+               SERVER: '$PROD_SERVER_IP'
                COMMAND: >
                   mkdir -p /srv/$DOMAIN_NAME/$DOMAIN_NAME-prod &&
                   cd /srv/$DOMAIN_NAME/$DOMAIN_NAME-prod &&
@@ -81,8 +84,8 @@ pipelines:
            - echo "Deploying to FAT environment"
            - pipe: atlassian/ssh-run:0.2.2
              variables:
-               SSH_USER: '$SSH_USER_NAME'
-               SERVER: '$SERVER_IP'
+               SSH_USER: '$DEV_SSH_USER_NAME'
+               SERVER: '$DEV_SERVER_IP'
                COMMAND: >
                   mkdir -p /srv/$DOMAIN_NAME/$DOMAIN_NAME-fat &&
                   cd /srv/$DOMAIN_NAME/$DOMAIN_NAME-fat &&
@@ -100,4 +103,4 @@ pipelines:
             enabled: false
          script:
            - echo "Sending Slack notification"
-           - slack-simple --url $PROD_DOMAIN_NAME --channel $SLACK_CHANEL --code fat --server $SERVER_NAME --container $CONTAINER_NAME
+           - slack-simple --url $DEV_DOMAIN_NAME --channel $SLACK_CHANEL --code fat --server $SERVER_NAME --container $CONTAINER_NAME
