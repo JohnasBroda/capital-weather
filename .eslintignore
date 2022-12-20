@@ -1,0 +1,6 @@
+package.json
+package-lock.json
+dist
+e2e/**
+src/app/api/**/*.ts
+// other files to ignore eslint
