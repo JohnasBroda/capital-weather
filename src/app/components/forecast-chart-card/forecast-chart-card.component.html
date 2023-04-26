@@ -1,0 +1,12 @@
+<ul class="forecast-days-list">
+    <li *ngFor="let day of weekdays; let i = index">
+        <app-weather-icon [iconId]="data[i].icon"></app-weather-icon>
+
+        <p *ngLet="data[i] as forecast" class="temp-label">
+            {{ forecast?.min | number : '1.0-0' }} /
+            {{ forecast?.max | number : '1.0-0' | degree }}
+        </p>
+    </li>
+</ul>
+
+<div id="chartdiv"></div>

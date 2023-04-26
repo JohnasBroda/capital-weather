@@ -1,0 +1,49 @@
+
+.container {
+  background-color: white;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 16px;
+
+
+  p {
+    margin: 0px
+  }
+
+  .left-side-container {
+    display: flex;
+    flex-direction: row;
+
+    .country {
+      font-weight: 700;
+    }
+
+    .city {
+      margin-left: 4px
+    }
+  }
+
+  .right-side-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .temperature {
+      color: #959191;
+      font-size: 11px;
+    }
+    .icon {
+      width: 16px;
+      height: 16px;
+      color: black;
+      margin-left: 4px;
+      margin-top: 2px;
+      font-size: 16px
+    }
+  }
+}

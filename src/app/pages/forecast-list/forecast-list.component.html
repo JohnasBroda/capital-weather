@@ -1,1 +1,22 @@
-<p>forecast-list works!</p>
+<div class="page-container">
+    <h1>Capital Weathers</h1>
+
+    <ul>
+        <p class="user-location-label">
+            {{ 'user-location' | translate }}
+        </p>
+        <li *ngIf="userLocation$ | async as userLocation" class="forecast-item">
+            <app-forecast-item
+                [forecast]="userLocation"
+                (click)="onSelect({ country: userLocation.country, city: userLocation.name })"
+            ></app-forecast-item>
+        </li>
+
+        <li *ngFor="let location of locations$ | async as locations" class="forecast-item">
+            <app-forecast-item
+                [forecast]="location"
+                (click)="onSelect({ country: location.country, city: location.name })"
+            ></app-forecast-item>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="left-side-container">
+        <p class="country">{{ forecast.country }}</p>
+        <p class="city">{{ forecast.name }}</p>
+    </div>
+    <div
+        *ngLet="{ temperature: forecast?.main?.temp, iconId: forecast?.weather?.[0]?.icon } as ctx"
+        class="right-side-container"
+    >
+        <p *ngIf="ctx?.temperature" class="temperature">{{ ctx?.temperature | degree }}</p>
+
+        <app-weather-icon [iconId]="ctx?.iconId"></app-weather-icon>
+    </div>
+</div>

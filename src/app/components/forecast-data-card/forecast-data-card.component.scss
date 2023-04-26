@@ -1,0 +1,34 @@
+:host {
+    display: block;
+    background-color: #f59c43;
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.weather-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 60px;
+    height: 60px;
+}
+
+.current-weather-label {
+    font-size: 72px;
+    font-weight: 900;
+}
+
+.forecast-label {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 15px 0;
+}
+
+.min-max-temperature-label {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 15px;
+}

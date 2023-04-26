@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 export const APP_ROUTES: Routes = [
     {
-        path: 'forecast-list',
+        path: '',
         loadComponent: () =>
             import('./pages/forecast-list/forecast-list.component').then(
                 (m) => m.ForecastListComponent

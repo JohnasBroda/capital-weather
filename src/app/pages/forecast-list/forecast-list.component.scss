@@ -1,3 +1,13 @@
 :host {
-  display: block;
+    display: block;
+}
+
+.user-location-label {
+    margin: 10px 0;
+    font-size: 24px;
+}
+
+.forecast-item {
+    margin: 10px 0;
+    cursor: pointer;
 }

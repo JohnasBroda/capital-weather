@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -7,8 +8,8 @@ import { RouterModule } from '@angular/router';
     styleUrls: ['./app.component.scss'],
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [RouterModule]
+    imports: [AsyncPipe, RouterModule]
 })
 export class AppComponent {
-    title = 'Capital weathers';
+    public readonly title = 'Capital weathers';
 }

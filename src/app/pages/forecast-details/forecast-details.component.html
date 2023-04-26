@@ -1,1 +1,12 @@
-<p>forecast-details works!</p>
+<div *ngIf="weather$ | async as weather" class="page-container">
+    <a [routerLink]="['']">
+        <mat-icon> {{ 'back' | translate }} </mat-icon>
+    </a>
+
+    <h3 class="title">{{ weather['country'] }} {{ weather['name'] }}</h3>
+
+    <div class="cards-container">
+        <app-forecast-data-card [weather]="weather" class="data-card"></app-forecast-data-card>
+        <app-forecast-chart-card [weather]="weather" class="data-card"></app-forecast-chart-card>
+    </div>
+</div>

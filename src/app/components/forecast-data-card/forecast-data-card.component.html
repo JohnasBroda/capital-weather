@@ -1,0 +1,14 @@
+<app-weather-icon [iconId]="weather.weather?.[0]?.icon" class="weather-icon"></app-weather-icon>
+
+<p class="current-weather-label">
+    {{ weather.main?.temp | number : '1.0-0' | degree }}
+</p>
+
+<p class="forecast-label">
+    {{ weather.weather?.[0]?.main }}
+</p>
+
+<p class="min-max-temperature-label">
+    {{ weather.main?.temp_min | degree : 'none' }} /
+    {{ weather.main?.temp_max | degree : 'none' }}
+</p>
